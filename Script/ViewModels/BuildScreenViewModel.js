@@ -8,6 +8,34 @@
     self.isLoading    = ko.observable(true);
     self.randomClass  = ko.observable(Utils.getRandomClass());
     self.mainBuild    = ko.observable();
+	
+	self.mostRecentBuildAndCompiles = ko.computed(function() {
+		var regularBuilds = ko.utils.arrayFilter(self.builds(), function(build) {
+			return build.buildTypeId() == 'CompileAndUnitTests_CompileAndBuild';
+		}, self);
+		
+		// return array of just the first one (most recent)
+		return regularBuilds.slice(0,1);
+	});
+	
+	self.mostRecentDeploysToDev = ko.computed(function() {
+		var deployToDevBuilds = ko.utils.arrayFilter(self.builds(), function(build) {
+			return build.buildTypeId() == 'DeployToDevelopment_DeployToDevelopment';
+		}, self);
+		
+		// return array of just the first one (most recent)
+		return deployToDevBuilds.slice(0,1);
+	});
+	
+	self.mostRecentDeploysToAccept = ko.computed(function() {
+		var deployToAcceptBuilds = ko.utils.arrayFilter(self.builds(), function(build) {
+			return build.buildTypeId() == 'DeployToAccept_DeployToAccept';
+		}, self);
+		
+		// return array of just the first one (most recent)
+		return deployToAcceptBuilds.slice(0,1);
+	});
+	
 
     self.hasError = ko.computed(function () {
         if (!this.errorMessage())
