@@ -9,44 +9,28 @@
 	<div class="page-loading" data-bind="showHide: isFirstLoad()"></div>
 	<div class="page-content" data-bind="showHide: !isFirstLoad()">
 	    <div id="left-panel">
-	        <ul data-bind="foreach: { data: mostRecentBuildAndCompiles }">
-	            <li data-bind="attr: { class: lowerStatus() }, css: { running: isRunning() }">
-	                <div class="build-branch"  data-bind="text: description()"></div>
-	                <div class="build-type" data-bind="text: buildType"></div>
-	                <div class="clear"></div>
-	                <div class="build-status" data-bind="text: isRunning() ? '' : status"></div>
-	                <div class="clear"></div>
-	                <!-- ko if: hasProgress() -->
-                       <div class="progress-container" data-bind="attr: { 'data-progress' : percentageComplete() }"></div>
-                    <!-- /ko -->
-	            </li>
-	        </ul>
+	        
+			<!-- ko if: latestDeployToDev() != null -->
+			<ul>
+				<li data-bind="attr: { class: latestDeployToDev().lowerStatus() }, css: { running: latestDeployToDev().isRunning() }">
+				
+					<div>
+						<div class="build-branch" data-bind="text: latestDeployToDev().description"></div>
+						<div class="build-type" data-bind="text: latestDeployToDev().buildType.name"></div>
+						<div class="clear"></div>
+						<div class="build-status" data-bind="text: latestDeployToDev().isRunning() ? '' : latestDeployToDev().status"></div>
+						<div class="clear"></div>
+						<!-- ko if: latestDeployToDev().hasProgress() -->
+						<div class="progress-container" data-bind="attr: { 'data-progress' : latestDeployToDev().percentageComplete() }"></div>
+						<!-- /ko -->
+					</div>
+				
+				</li>
+			</ul>
+			<!-- /ko -->
 			
-			<ul data-bind="foreach: { data: mostRecentDeploysToDev }">
-	            <li data-bind="attr: { class: lowerStatus() }, css: { running: isRunning() }">
-	                <div class="build-branch"  data-bind="text: description()"></div>
-	                <div class="build-type" data-bind="text: buildType"></div>
-	                <div class="clear"></div>
-	                <div class="build-status" data-bind="text: isRunning() ? '' : status"></div>
-	                <div class="clear"></div>
-	                <!-- ko if: hasProgress() -->
-                       <div class="progress-container" data-bind="attr: { 'data-progress' : percentageComplete() }"></div>
-                    <!-- /ko -->
-	            </li>
-	        </ul>
 			
-			<ul data-bind="foreach: { data: mostRecentDeploysToAccept }">
-	            <li data-bind="attr: { class: lowerStatus() }, css: { running: isRunning() }">
-	                <div class="build-branch"  data-bind="text: description()"></div>
-	                <div class="build-type" data-bind="text: buildType"></div>
-	                <div class="clear"></div>
-	                <div class="build-status" data-bind="text: isRunning() ? '' : status"></div>
-	                <div class="clear"></div>
-	                <!-- ko if: hasProgress() -->
-                       <div class="progress-container" data-bind="attr: { 'data-progress' : percentageComplete() }"></div>
-                    <!-- /ko -->
-	            </li>
-	        </ul>
+			
 	    </div>
 	    <div id="right-panel">
 	        <!-- ko if: mainBuild() != null && mainBuild().status() != null -->
